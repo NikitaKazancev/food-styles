@@ -1,0 +1,11 @@
+.tabcontent img, .tabcontent__descr__wrap {
+    transition: all 1s;
+}
+
+.fade {
+    opacity: 0.2;
+}
+
+.show {
+    opacity: 1;
+}
