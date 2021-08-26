@@ -6,6 +6,14 @@
     opacity: 0.2;
 }
 
-.show {
+.unFade {
     opacity: 1;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
 }

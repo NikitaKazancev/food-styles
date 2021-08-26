@@ -38,15 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
 
         createStyle(id = 0) {
-            changeClasses(this.img, 'fade', 'show');
-            changeClasses(this.descr, 'fade', 'show');
+            changeClasses(this.img, 'fade', 'unFade');
+            changeClasses(this.descr, 'fade', 'unFade');
             const interval = setInterval(() => {
                 this.img.setAttribute('src', this.styles[id].imgUrl);
                 this.img.setAttribute('alt', this.styles[id].alt);
                 this.descr.textContent = this.styles[id].text;
 
-                changeClasses(this.img, 'show', 'fade');
-                changeClasses(this.descr, 'show', 'fade');
+                changeClasses(this.img, 'unFade', 'fade');
+                changeClasses(this.descr, 'unFade', 'fade');
                 clearInterval(interval);
             }, 600);
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     foodStyles.createStyle();
 
     // Timer
-    const deadline = new Date(2021, 7, 30),
+    const deadline = new Date(2021, 7, 29),
         days = document.querySelector('#days'),
         hours = document.querySelector('#hours'),
         minutes= document.querySelector('#minutes'),
@@ -98,4 +98,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateTimer();
+
+    // Modal
+    const modalTimer = 5000,
+        modal = document.querySelector('.modal'),
+        btnContact = document.querySelectorAll('[data-contact]');
+
+    const modalToggle = (overflow = 'hidden') => {
+        document.documentElement.style.overflow = overflow;
+        modal.classList.toggle('show');
+        clearInterval(timeoutId);
+        window.removeEventListener('scroll', modalScroll);
+    };
+    
+    const modalScroll = () => {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.offsetHeight - 10) modalToggle();
+    };
+    
+    const timeoutId = setTimeout(() => {
+        modalToggle();
+    }, modalTimer);
+
+    window.addEventListener('scroll', modalScroll);
+
+    btnContact.forEach(btn => btn.addEventListener('click', () => modalToggle()));
+    document.addEventListener('keydown', ({code}) => {
+        if (code === "Escape" && modal.classList.contains('show')) modalToggle();
+    });
+
+    modal.addEventListener('click', ({target}) => {
+        if (target.matches('.modal') || target.matches('.modal__close')) modalToggle('');
+    });
 });
