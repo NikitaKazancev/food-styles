@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalToggle = (overflow = 'hidden') => {
         document.documentElement.style.overflow = overflow;
         modal.classList.toggle('show');
-        clearInterval(timeoutId);
+        // clearInterval(timeoutId);
         window.removeEventListener('scroll', modalScroll);
     };
     
@@ -115,9 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.offsetHeight - 10) modalToggle();
     };
     
-    const timeoutId = setTimeout(() => {
-        modalToggle();
-    }, modalTimer);
+    // const timeoutId = setTimeout(() => {
+    //     modalToggle();
+    // }, modalTimer);
 
     window.addEventListener('scroll', modalScroll);
 
@@ -129,4 +129,59 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.addEventListener('click', ({target}) => {
         if (target.matches('.modal') || target.matches('.modal__close')) modalToggle('');
     });
+});
+
+// Cards
+const data = {
+    rate: 26.81,
+    cards: [
+        {
+            title: 'Фитнес',
+            descr: 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+            price: 9,
+            img: 'vegy',
+        },
+        {
+            title: 'Премиум',
+            descr: 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+            price: 21,
+            img: 'elite',
+        },
+        {
+            title: 'Постное',
+            descr: 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+            price: 14,
+            img: 'post',
+        },
+    ]
+};
+
+class Card {
+    constructor(title, descr, price, img, classes = []) {
+        this.title = 'Меню' + title;
+        this.descr = descr;
+        this.price = price;
+        this.img = img;
+        this.classes = "menu__item " + classes.join(' ');
+    }
+
+    render() {
+        document.querySelector('.menu__field > .container').innerHTML += `
+            <div class="${this.classes}">
+                <img src="img/tabs/${this.img}.jpg" alt="${this.img}">
+                <h3 class="menu__item-subtitle">Меню "${this.title}"</h3>
+                <div class="menu__item-descr">${this.descr}</div>
+                <div class="menu__item-divider"></div>
+                <div class="menu__item-price">
+                    <div class="menu__item-cost">Цена:</div>
+                    <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+data.cards.forEach(({title, descr, price, img, additionalClasses: classes}) => {
+    if (classes) new Card(title, descr, Math.round(price*data.rate), img, classes).render();
+    else new Card(title, descr, Math.round(price*data.rate), img).render();
 });
