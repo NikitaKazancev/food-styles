@@ -17,3 +17,40 @@
 .hide {
     display: none;
 }
+
+.form-response {
+    width: 1150px;
+    height: 50px;
+    position: fixed;
+    color: #fff;
+    font-size: 20px;
+    padding: 11px 20px;
+    border: 1px solid transparent;
+    border-radius: 0 0 4px 4px;
+    right: 50%;
+    transform: translateX(50%);
+    z-index: 1051;
+    transition: all 0.5s;
+    top: -50px;
+}
+
+.form-response_success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+    top: 0;
+}
+
+.form-response_error {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    top: 0;
+}
+
+.form-response_info {
+    color: #055160;
+    background-color: #cff4fc;
+    border-color: #b6effb;
+    top: 0;
+}

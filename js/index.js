@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             minutes.textContent = addZero(timer.getUTCMinutes());
             secs.textContent = addZero(timer.getUTCSeconds());
             interval = setTimeout(updateTimer, 1000);
-        } else clearInterval(interval);
+        } else clearTimeout(interval);
     }
 
     updateTimer();
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalToggle = (overflow = 'hidden') => {
         document.documentElement.style.overflow = overflow;
         modal.classList.toggle('show');
-        // clearInterval(timeoutId);
+        // clearTimeout(timeoutId);
         window.removeEventListener('scroll', modalScroll);
     };
     
@@ -129,59 +129,105 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.addEventListener('click', ({target}) => {
         if (target.matches('.modal') || target.matches('.modal__close')) modalToggle('');
     });
-});
 
-// Cards
-const data = {
-    rate: 26.81,
-    cards: [
-        {
-            title: 'Фитнес',
-            descr: 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-            price: 9,
-            img: 'vegy',
-        },
-        {
-            title: 'Премиум',
-            descr: 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-            price: 21,
-            img: 'elite',
-        },
-        {
-            title: 'Постное',
-            descr: 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
-            price: 14,
-            img: 'post',
-        },
-    ]
-};
-
-class Card {
-    constructor(title, descr, price, img, classes = []) {
-        this.title = 'Меню' + title;
-        this.descr = descr;
-        this.price = price;
-        this.img = img;
-        this.classes = "menu__item " + classes.join(' ');
-    }
-
-    render() {
-        document.querySelector('.menu__field > .container').innerHTML += `
-            <div class="${this.classes}">
-                <img src="img/tabs/${this.img}.jpg" alt="${this.img}">
-                <h3 class="menu__item-subtitle">Меню "${this.title}"</h3>
-                <div class="menu__item-descr">${this.descr}</div>
-                <div class="menu__item-divider"></div>
-                <div class="menu__item-price">
-                    <div class="menu__item-cost">Цена:</div>
-                    <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+    // Cards
+    const data = {
+        rate: 26.81,
+        cards: [
+            {
+                title: 'Фитнес',
+                descr: 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+                price: 9,
+                img: 'vegy',
+            },
+            {
+                title: 'Премиум',
+                descr: 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+                price: 21,
+                img: 'elite',
+            },
+            {
+                title: 'Постное',
+                descr: 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+                price: 14,
+                img: 'post',
+            },
+        ]
+    };
+    
+    class Card {
+        constructor(title, descr, price, img, classes = []) {
+            this.title = 'Меню' + title;
+            this.descr = descr;
+            this.price = price;
+            this.img = img;
+            this.classes = "menu__item " + classes.join(' ');
+        }
+    
+        render() {
+            document.querySelector('.menu__field > .container').innerHTML += `
+                <div class="${this.classes}">
+                    <img src="img/tabs/${this.img}.jpg" alt="${this.img}">
+                    <h3 class="menu__item-subtitle">Меню "${this.title}"</h3>
+                    <div class="menu__item-descr">${this.descr}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
     }
-}
+    
+    data.cards.forEach(({title, descr, price, img, additionalClasses: classes}) => {
+        if (classes) new Card(title, descr, Math.round(price*data.rate), img, classes).render();
+        else new Card(title, descr, Math.round(price*data.rate), img).render();
+    });
+    
+    // Forms
+    const forms = document.querySelectorAll('form'),
+        messages = {
+            error: 'Произошла ошибка!!!',
+            info: 'Ваш запрос обрабатывается...',
+            success: 'Ваш запрос был успешно отправлен. Скоро с вами свяжутся'
+        };
 
-data.cards.forEach(({title, descr, price, img, additionalClasses: classes}) => {
-    if (classes) new Card(title, descr, Math.round(price*data.rate), img, classes).render();
-    else new Card(title, descr, Math.round(price*data.rate), img).render();
+    const showFormResp = (formResponse, status, remove) => {
+        console.log(formResponse, status, remove);
+        formResponse.textContent = messages[status];
+        formResponse.classList.add(`form-response_${status}`);
+
+        if (remove) {
+            formResponse.classList.remove('form-response_info');
+            const timeout = setTimeout(() => {
+                formResponse.classList.remove(`form-response_${status}`);
+
+                clearTimeout(timeout);
+            }, 5000);
+        }
+    };
+    
+    forms.forEach(form => {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+    
+            const req = new XMLHttpRequest();
+            req.open('POST', 'server.php');
+            req.send(new FormData(form));
+
+            form.reset();
+            const formResponse = document.querySelector('.form-response');
+            showFormResp(formResponse, 'info');
+
+            req.addEventListener('load', () => {
+                if (req.status === 200) {
+                    console.log(req.response);
+                    showFormResp(formResponse, 'success', true);
+                } else {
+                    showFormResp(formResponse, 'error', true);
+                }
+            });
+        });
+    });
 });
