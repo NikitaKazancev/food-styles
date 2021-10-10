@@ -13,12 +13,12 @@ const isProd = !isDev;
 module.exports = {
 	mode: "development",
 	context: path.resolve(__dirname, "src"),
-	entry: { main: ["@babel/polyfill", "./index.js"] },
+	entry: { main: ["@babel/polyfill", "./index.js"] }, // ,
 	output: {
 		filename: "[name].[hash].js",
 		path: path.resolve(__dirname, "dist"),
 	},
-	watch: true,
+	// watch: true,
 	resolve: {
 		extensions: [".js"],
 	},
@@ -34,11 +34,21 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
+				exclude: /node_modules|bower_components/,
 				use: [
 					{
 						loader: "babel-loader",
 						options: {
-							presets: ["@babel/preset-env"],
+							presets: [
+								[
+									"@babel/preset-env",
+									{
+										useBuiltIns: "entry",
+										corejs: 3,
+										// 	// debug: true,
+									},
+								],
+							],
 						},
 					},
 				],

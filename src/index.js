@@ -1,5 +1,9 @@
 import "./index.css";
 
+// not working
+// require("es6-promise").polyfill();
+// import "nodelist-foreach-polyfill";
+
 import foodStyles from "./components/foodStyles";
 import timer from "./components/timer";
 import modal from "./components/modal";

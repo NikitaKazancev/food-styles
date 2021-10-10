@@ -8,6 +8,7 @@
 		"prod": "$env:NODE_ENV='production'"
 	},
 	"devDependencies": {
+		"@babel/cli": "^7.15.7",
 		"@babel/core": "^7.15.8",
 		"@babel/polyfill": "^7.12.1",
 		"@babel/preset-env": "^7.15.8",
@@ -15,6 +16,7 @@
 		"babel-loader": "^8.2.2",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^9.0.1",
+		"core-js": "^3.18.2",
 		"css-loader": "^6.4.0",
 		"css-minimizer-webpack-plugin": "^3.1.1",
 		"html-webpack-plugin": "^5.3.2",
@@ -24,5 +26,13 @@
 		"webpack-cli": "^4.9.0"
 	},
 	"author": "",
-	"license": "ISC"
+	"license": "ISC",
+	"browserslist": "> 0.25%, not dead",
+	"dependencies": {
+		"es6-promise": "^4.2.8",
+		"es6-promise-polyfill": "^1.2.0",
+		"fetch-ie8": "^1.5.0",
+		"nodelist-foreach-polyfill": "^1.2.0",
+		"npx": "^10.2.2"
+	}
 }
